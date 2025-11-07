@@ -9,21 +9,35 @@ import Foundation
 
 struct DefaultGhibliService: GhibliService {
   func fetchPerson(from urlString: String) async throws -> Person {
-    try await fetch(form: "https://ghibliapi.vercel.app/people/986faac6-67e3-4fb8-a9ee-bad077c2e7fe", type: Person.self)
+    try await fetch(from: urlString, type: Person.self)
   }
   
   func fetchFilms() async throws -> [Film] {
-    try await fetch(form: "https://ghibliapi.vercel.app/films", type: [Film].self)
+    try await fetch(from: "https://ghibliapi.vercel.app/films", type: [Film].self)
   }
   
-  private func fetch<T: Decodable>(form urlString: String, type: T.Type) async throws -> T {
-    let url = URL(string: urlString)!
-    let (data, response) = try await URLSession.shared.data(from: url)
-
-    if let http = response as? HTTPURLResponse, !(200...299).contains(http.statusCode) {
-      throw URLError(.badServerResponse)
+  func searchFilms(query: String) async throws -> [Film] {
+    let all = try await fetchFilms()
+    let q = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    guard !q.isEmpty else { return all }
+    return all.filter { film in
+      film.title.lowercased().contains(q) ||
+      film.description.lowercased().contains(q)
     }
-
-    return try JSONDecoder().decode(type, from: data)
+  }
+  
+  private func fetch<T: Decodable>(from urlString: String, type: T.Type) async throws -> T {
+    guard let url = URL(string: urlString) else { throw APIError.invalidURL }
+    do {
+      let (data, response) = try await URLSession.shared.data(from: url)
+      if let http = response as? HTTPURLResponse, !(200...299).contains(http.statusCode) {
+        throw APIError.invalidResponse
+      }
+      return try JSONDecoder().decode(type, from: data)
+    } catch let error as DecodingError {
+      throw APIError.decoding(error)
+    } catch {
+      throw APIError.network(error)
+    }
   }
 }

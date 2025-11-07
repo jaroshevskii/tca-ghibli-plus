@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FilmDetailView: View {
   let film: Film
+  let favoritesViewModel: FavoritesViewModel
   
   @State private var viewModel = FilmDetailViewModel()
   
@@ -31,7 +32,7 @@ struct FilmDetailView: View {
             Text("Loading...")
           }
           
-        case let .loaded(people):
+        case let .success(people):
           ForEach(people) { person in
             Text(person.name)
           }
@@ -42,11 +43,23 @@ struct FilmDetailView: View {
         }
       }
       .padding()
+      .toolbar {
+        FavoriteButton(filmID: film.id, favoritesViewModel: favoritesViewModel)
+      }
       .task { await viewModel.fetch(for: film) }
     }
   }
 }
 
+
+
 #Preview {
-  FilmDetailView(film: .mock)
+  NavigationStack {
+    FilmDetailView(
+      film: .mock,
+      favoritesViewModel: FavoritesViewModel(
+        service: MockFavoriteStorage()
+      )
+    )
+  }
 }

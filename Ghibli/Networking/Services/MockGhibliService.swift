@@ -8,6 +8,10 @@
 import Foundation
 
 struct MockGhibliService: GhibliService {
+  func searchFilms(query: String) async throws -> [Film] {
+    [Film.mock]
+  }
+  
   private struct SampleData: Decodable {
     let films: [Film]
     let people: Person

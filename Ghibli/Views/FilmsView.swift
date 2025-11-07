@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FilmsView: View {
   let filmsViewModel: FilmsViewModel
+  let favoritesViewModel: FavoritesViewModel
   
   var body: some View {
     NavigationStack {
@@ -20,8 +21,11 @@ struct FilmsView: View {
           ProgressView {
             Text("Loading...")
           }
-        case let .loaded(films):
-          FilmListView(films: films)
+        case let .success(films):
+          FilmListView(
+            films: films,
+            favoritesViewModel: favoritesViewModel
+          )
         case let .error(error):
           Text(error)
             .foregroundStyle(.pink)
@@ -29,7 +33,6 @@ struct FilmsView: View {
       }
       .navigationTitle("Ghibli")
     }
-    .task { await filmsViewModel.fetch() }
   }
 }
 
@@ -37,6 +40,9 @@ struct FilmsView: View {
   FilmsView(
     filmsViewModel: FilmsViewModel(
       service: MockGhibliService()
+    ),
+    favoritesViewModel: FavoritesViewModel(
+      service: MockFavoriteStorage()
     )
   )
 }

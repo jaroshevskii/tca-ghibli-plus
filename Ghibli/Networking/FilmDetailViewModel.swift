@@ -11,11 +11,8 @@ import Playgrounds
 
 @Observable
 final class FilmDetailViewModel {
-  enum State: Equatable {
-    case idle, loading, loaded([Person]), error(String)
-  }
   
-  private(set) var state = State.idle
+  private(set) var state = LoadingState<[Person]>.idle
   
   private let service: GhibliService
   
@@ -24,7 +21,7 @@ final class FilmDetailViewModel {
   }
   
   func fetch(for film: Film) async {
-    guard state != .loading else { return }
+    guard !state.isLoading else { return }
     state = .loading
     do {
       let people = try await withThrowingTaskGroup(of: (Int, Person).self) { group in
@@ -42,7 +39,7 @@ final class FilmDetailViewModel {
         
         return results.sorted { $0.0 < $1.0 }.map { $0.1 }
       }
-      state = .loaded(people)
+      state = .success(people)
     } catch let error as APIError {
       state = .error(error.errorDescription ?? "Unknown error")
     } catch {
@@ -61,7 +58,7 @@ final class FilmDetailViewModel {
     print("Idle")
   case .loading:
     print("Loading...")
-  case .loaded(let people):
+  case .success(let people):
     for person in people {
       print(person)
     }
