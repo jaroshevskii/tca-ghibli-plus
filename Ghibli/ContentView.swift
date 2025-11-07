@@ -8,16 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+  @State private var filmsViewModel = FilmsViewModel()
+  
   var body: some View {
     TabView {
       Tab("Movies", systemImage: "movieclapper") {
-        FilmsView()
+        FilmsView(filmsViewModel: filmsViewModel)
       }
       Tab("Favorites", systemImage: "heart") {
-        FavoritesView()
+        FavoritesView(filmsViewModel: filmsViewModel)
       }
       Tab("Settings", systemImage: "gear") {
         SettingsView()
+      }
+      Tab(role: .search) {
+        SearchView()
       }
     }
   }
@@ -26,4 +31,3 @@ struct ContentView: View {
 #Preview {
   ContentView()
 }
-
