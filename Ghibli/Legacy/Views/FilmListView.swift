@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FilmListView: View {
     
-    var films: [Film]
+    var films: [LegacyFilm]
     let favoritesViewModel: FavoritesViewModel
     
     var body: some View {
@@ -21,7 +21,7 @@ struct FilmListView: View {
             }
             
         }
-        .navigationDestination(for: Film.self) { film in
+        .navigationDestination(for: LegacyFilm.self) { film in
             FilmDetailScreen(film: film,
                              favoritesViewModel: favoritesViewModel)
         }
@@ -31,7 +31,7 @@ struct FilmListView: View {
 
 private struct FilmRow: View {
     
-    let film: Film
+    let film: LegacyFilm
     let favoritesViewModel: FavoritesViewModel
     
     var body: some View {
@@ -73,7 +73,7 @@ private struct FilmRow: View {
     @State @Previewable var favorites = FavoritesViewModel(service: MockFavoriteStorage())
     
     NavigationStack {
-        FilmListView(films: [Film.example, Film.exampleFavorite],
+        FilmListView(films: [LegacyFilm.example, LegacyFilm.exampleFavorite],
                      favoritesViewModel: favorites)
     }
     .task {

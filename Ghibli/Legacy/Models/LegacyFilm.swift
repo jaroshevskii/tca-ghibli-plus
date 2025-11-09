@@ -27,7 +27,7 @@ struct FilmDTO: Sendable {
 */
 
 nonisolated //opted out of @MainActor
-struct  Film: Codable, Identifiable, Equatable, Hashable {
+struct  LegacyFilm: Codable, Identifiable, Equatable, Hashable {
     let id: String
     let title: String
     let description: String
@@ -55,12 +55,12 @@ struct  Film: Codable, Identifiable, Equatable, Hashable {
     //MARK: - Preview
     
     @MainActor
-    static var example: Film {
+    static var example: LegacyFilm {
         //MockGhibliService().fetchFilm()
         let bannerULR = URL.convertAssetImage(named: "bannerImage")
         let posterULR = URL.convertAssetImage(named: "posterImage")
         
-       return Film(id: "id",
+       return LegacyFilm(id: "id",
                    title: "My Neighbor Totoro",
                    description: "Two sisters encounter friendly forest spirits in rural Japan.",
                    director: "Hayao Miyazaki",
@@ -74,12 +74,12 @@ struct  Film: Codable, Identifiable, Equatable, Hashable {
     }
     
     @MainActor
-    static var exampleFavorite: Film {
+    static var exampleFavorite: LegacyFilm {
         //MockGhibliService().fetchFilm()
         let bannerULR = URL.convertAssetImage(named: "bannerImage")
         let posterULR = URL.convertAssetImage(named: "posterImage")
         
-       return Film(id: "2baf70d1-42bb-4437-b551-e5fed5a87abe",
+       return LegacyFilm(id: "2baf70d1-42bb-4437-b551-e5fed5a87abe",
                    title: "Castle in the Sky",
                    description: "The orphan Sheeta inherited a mysterious crystal that links her to the mythical sky-kingdom of Laputa. With the help of resourceful Pazu and a rollicking band of sky pirates, she makes her way to the ruins of the once-great civilization. Sheeta and Pazu must outwit the evil Muska, who plans to use Laputa's science to make himself ruler of the world.",
                    director: "Hayao Miyazaki",
@@ -104,7 +104,7 @@ import Playgrounds
     do {
         let (data, response) = try await URLSession.shared.data(from: url)
         
-        try JSONDecoder().decode([Film].self, from: data)
+        try JSONDecoder().decode([LegacyFilm].self, from: data)
     } catch {
         print(error)
     }

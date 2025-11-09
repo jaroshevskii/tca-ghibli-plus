@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FilmDetailScreen: View {
     
-    let film: Film
+    let film: LegacyFilm
     let favoritesViewModel: FavoritesViewModel
     
     @State private var viewModel = FilmDetailViewModel()
@@ -125,7 +125,7 @@ fileprivate struct CharacterSectionView:  View {
 
 #Preview {
     NavigationStack {
-        FilmDetailScreen(film: Film.example,
+        FilmDetailScreen(film: LegacyFilm.example,
                          favoritesViewModel: FavoritesViewModel(service: MockFavoriteStorage()))
     }
 }

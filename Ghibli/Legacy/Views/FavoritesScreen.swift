@@ -12,7 +12,7 @@ struct FavoritesScreen: View {
     let filmsViewModel: FilmsViewModel
     let favoritesViewModel: FavoritesViewModel
     
-    var films: [Film] {
+    var films: [LegacyFilm] {
        let favorites = favoritesViewModel.favoriteIDs
         switch filmsViewModel.state {
             case .loaded(let films):

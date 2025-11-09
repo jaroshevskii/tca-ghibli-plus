@@ -19,7 +19,7 @@ class FilmDetailViewModel {
         self.service = service
     }
     
-    func fetch(for film: Film) async {
+    func fetch(for film: LegacyFilm) async {
         guard !state.isLoading else { return }
         
         state = .loading
@@ -30,9 +30,9 @@ class FilmDetailViewModel {
             try await withThrowingTaskGroup(of: Person.self) { group in
                 
                 for personInfoURL in film.people {
-                    group.addTask {
-                        try await self.service.fetchPerson(from: personInfoURL)
-                    }
+//                    group.addTask {
+//                        try await self.service.fetchPerson(from: personInfoURL)
+//                    }
                 }
                 
                 // collect results as they complete

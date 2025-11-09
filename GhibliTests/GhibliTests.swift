@@ -13,14 +13,14 @@ struct GhibliSwiftUIAppTests {
 
     actor MockGhibliService: GhibliService {
         
-        let mockFilms: [Film]
+        let mockFilms: [LegacyFilm]
         let shouldThrowError: Bool
         let fetchDelay: Duration
         
         var fetchCallCount = 0
         var lastSearchQuery: String? = nil
 
-        init(mockFilms: [Film],
+        init(mockFilms: [LegacyFilm],
              shouldThrowError: Bool = false,
              fetchDelay: Duration = .zero) {
             self.mockFilms = mockFilms
@@ -30,7 +30,7 @@ struct GhibliSwiftUIAppTests {
         
         //MARK: - Protocol conformance
         
-        func fetchFilms() async throws -> [Film] {
+        func fetchFilms() async throws -> [LegacyFilm] {
             if shouldThrowError {
                 throw APIError.networkError(NSError(domain: "Test", code: -1))
             }
@@ -42,7 +42,7 @@ struct GhibliSwiftUIAppTests {
             return mockFilms
         }
         
-      func searchFilm(for searchTerm: String) async throws -> [Film] {
+      func searchFilm(for searchTerm: String) async throws -> [LegacyFilm] {
             
             self.fetchCallCount += 1
             self.lastSearchQuery = searchTerm
@@ -74,7 +74,7 @@ struct GhibliSwiftUIAppTests {
 
     // MARK: - Test Data
      let mockFilms = [
-         Film(
+         LegacyFilm(
              id: "1",
              title: "My Neighbor Totoro",
              description: "Two sisters discover Totoro",
@@ -87,7 +87,7 @@ struct GhibliSwiftUIAppTests {
              bannerImage: "",
              people: []
          ),
-         Film(
+         LegacyFilm(
              id: "2",
              title: "Spirited Away",
              description: "A girl enters a spirit world",
@@ -100,7 +100,7 @@ struct GhibliSwiftUIAppTests {
              bannerImage: "",
              people: []
          ),
-         Film(
+         LegacyFilm(
              id: "3",
              title: "Princess Mononoke",
              description: "A prince fights to save the forest",

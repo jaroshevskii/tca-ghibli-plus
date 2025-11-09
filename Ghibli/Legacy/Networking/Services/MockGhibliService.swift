@@ -10,7 +10,7 @@ import Foundation
 struct MockGhibliService: GhibliService {
     
     private struct SampleData: Decodable {
-        let films: [Film]
+        let films: [LegacyFilm]
         let people: [Person]
     }
     
@@ -31,12 +31,12 @@ struct MockGhibliService: GhibliService {
     
     //MARK: - Protocol conformance
     
-    func fetchFilms() async throws -> [Film] {
+    func fetchFilms() async throws -> [LegacyFilm] {
         let data = try loadSampleData()
         return data.films
     }
     
-    func searchFilm(for searchTerm: String) async throws -> [Film] {
+    func searchFilm(for searchTerm: String) async throws -> [LegacyFilm] {
         let allFilms = try await fetchFilms()
         
         return allFilms.filter { film in
@@ -51,7 +51,7 @@ struct MockGhibliService: GhibliService {
     
     //MARK: - preview/testing only
     
-    func fetchFilm() -> Film {
+    func fetchFilm() -> LegacyFilm {
         let data = try! loadSampleData()
         return data.films.first!
     }

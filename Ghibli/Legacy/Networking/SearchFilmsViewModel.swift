@@ -11,7 +11,7 @@ import Observation
 @Observable
 class SearchFilmsViewModel {
     
-    var state: LoadingState<[Film]> = .idle
+    var state: LoadingState<[LegacyFilm]> = .idle
     private var currentSearchTerm: String = ""
     
     private let service: GhibliService

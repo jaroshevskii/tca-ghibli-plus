@@ -11,7 +11,7 @@ import Observation
 @Observable
 class FilmsViewModel {
 
-    var state: LoadingState<[Film]> = .idle
+    var state: LoadingState<[LegacyFilm]> = .idle
     
     private let service: GhibliService
     
@@ -37,9 +37,10 @@ class FilmsViewModel {
     
 // MARK: - Preview
     
+    @MainActor
     static var example: FilmsViewModel {
         let vm = FilmsViewModel(service: MockGhibliService())
-        vm.state = .loaded([Film.example, Film.exampleFavorite])
+        vm.state = .loaded([LegacyFilm.example, LegacyFilm.exampleFavorite])
         return vm
     }
 
