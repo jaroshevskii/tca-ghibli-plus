@@ -10,15 +10,13 @@ import SwiftUI
 
 @main
 struct GhibliApp: App {
-  static let store = Store(initialState: FilmsList.State()) {
-    FilmsList()
+  static let store = Store(initialState: Films.State()) {
+    Films()
   }
   
   var body: some Scene {
     WindowGroup {
-      NavigationStack {
-        FilmsListView(store: Self.store)
-      }
+      FilmsView(store: Self.store)
     }
   }
 }

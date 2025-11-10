@@ -18,7 +18,7 @@ struct Films {
   
   @Reducer
   enum Path {
-    case detail
+    case detail(FilmDetail)
   }
   
   enum Action {
@@ -43,6 +43,8 @@ struct Films {
   }
 }
 
+extension Films.Path.State: Equatable {}
+
 struct FilmsView: View {
   @Bindable var store: StoreOf<Films>
   
@@ -51,8 +53,8 @@ struct FilmsView: View {
       FilmsListView(store: store.scope(state: \.filmsList, action: \.filmsList))
     } destination: { store in
       switch store.case {
-      case .detail:
-        EmptyView()
+      case let .detail(store):
+        FilmDetailView(store: store)
       }
     }
   }
