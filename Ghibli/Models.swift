@@ -17,15 +17,20 @@ struct Film: Identifiable, Equatable, Decodable {
   let director: String
   let releaseDate: String
   let bannerImageURL: URL
+  let producer: String
+  let runningTime: String
+  let ratingScore: String
   
   typealias ID = Tagged<Self, UUID>
   
   enum CodingKeys: String, CodingKey {
-    case id, title, description, director
+    case id, title, description, director, producer, runningTime, ratingScore
     case imageURL = "image"
     case releaseDate = "release_date"
     case bannerImageURL = "movie_banner"
   }
+  
+  var duration: String { runningTime }
 }
 
 extension Film {
@@ -36,7 +41,10 @@ extension Film {
     imageURL: URL(string: "https://image.tmdb.org/t/p/w600_and_h900_bestv2/npOnzAbLh6VOIu3naU5QaEcTepo.jpg")!,
     director: "Hayao Miyazaki",
     releaseDate: "1986",
-    bannerImageURL: URL(string: "https://image.tmdb.org/t/p/w533_and_h300_bestv2/3cyjYtLWCBE1uvWINHFsFnE8LUK.jpg")!
+    bannerImageURL: URL(string: "https://image.tmdb.org/t/p/w533_and_h300_bestv2/3cyjYtLWCBE1uvWINHFsFnE8LUK.jpg")!,
+    producer: "Isao Takahata",
+    runningTime: "124",
+    ratingScore: "95"
   )
   static let mocks: IdentifiedArray = [
     mock,
@@ -48,6 +56,10 @@ extension Film {
       director: "Hayao Miyazaki",
       releaseDate: "1988",
       bannerImageURL: URL(string: "https://image.tmdb.org/t/p/original/etqr6fOOCXQOgwrQXaKwenTSuzx.jpg")!
+      ,
+      producer: "Toru Hara",
+      runningTime: "86",
+      ratingScore: "93"
     ),
     Self(
       id: Film.ID(UUID()),
@@ -57,6 +69,10 @@ extension Film {
       director: "Isao Takahata",
       releaseDate: "1988",
       bannerImageURL: URL(string: "https://image.tmdb.org/t/p/original/vkZSd0Lp8iCVBGpFH9L7LzLusjS.jpg")!
+      ,
+      producer: "Toru Hara",
+      runningTime: "89",
+      ratingScore: "97"
     )
   ]
   static let placeholder = Self(
@@ -67,5 +83,9 @@ extension Film {
     director: "---",
     releaseDate: "---",
     bannerImageURL: URL(string: "https://example.com")!
+    ,
+    producer: "---",
+    runningTime: "---",
+    ratingScore: "---"
   )
 }
